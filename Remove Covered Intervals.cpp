@@ -1,7 +1,7 @@
 class Solution {
     public:
         int removeCoveredIntervals(vector<vector<int>>& intervals) {
-            sort(intervals.begin(), end(intervals));
+            sort(begin(intervals), end(intervals));
             int cnt = 1;
             vector<int> interval = intervals[0];
             for(int i = 1;i < intervals.size();i++){
