@@ -29,3 +29,34 @@ class Solution {
             return solve(0, 0, 0, nums);
         }
     };
+
+// Bottom Up
+
+class Solution {
+    public:
+        int mod = 1e9+7;
+        int subsequencePairCount(vector<int>& nums) {
+            int n = nums.size(), maxvalue = *max_element(begin(nums), end(nums));
+            vector<vector<vector<int>>> dp(n+1, vector<vector<int>>(maxvalue+1, vector<int>(maxvalue+1, 0)));
+            for(int i = 0;i <= maxvalue;i++)
+                for(int j = 0;j <= maxvalue;j++)
+                    dp[n][i][j] = i != 0 && i == j;
+
+            for(int i = n-1;i >= 0;i--){
+                for(int gcd1 = maxvalue;gcd1 >= 0;gcd1--){
+                    for(int gcd2 = maxvalue;gcd2 >= 0;gcd2--){
+                        long long none = dp[i+1][gcd1][gcd2];
+
+                        // seq1
+                        long long seq1 = dp[i+1][__gcd(gcd1, nums[i])][gcd2];
+
+                        // seq2
+                        long long seq2 = dp[i+1][gcd1][__gcd(gcd2, nums[i])];
+
+                        dp[i][gcd1][gcd2] = (none + seq1 + seq2)%mod;
+                    }
+                }
+            }
+            return dp[0][0][0];
+        }
+    };
